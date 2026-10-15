@@ -1,45 +1,115 @@
 @import "tailwindcss";
 
-:root {
-  --background: #09090b;
-  --foreground: #f4f4f5;
+/* ==========================================================================
+   Design tokens — the ONLY place raw colors live.
+   Tailwind v4 turns every token in @theme into utilities, e.g.
+   --color-surface → bg-surface / text-surface / border-surface,
+   and opacity modifiers work on them: bg-surface/70, border-accent/20.
+   ========================================================================== */
+@theme {
+  /* surfaces */
+  --color-bg: #0b090e;
+  --color-surface: #17131d;
+  --color-field: #1f1826;
+
+  /* text */
+  --color-fg: #ebe4f0;
+  --color-fg-muted: #cdc4cf;
+  --color-fg-subtle: #9c93a3;
+
+  /* brand */
+  --color-accent: #b99bd3;
+  --color-accent-hover: #c9afe0;
+  --color-accent-pressed: #a585c2;
+  --color-on-accent: #09060b;
+  --color-violet: #9861c9;
+  --color-deep: #512c71;
+
+  /* status (always paired with an icon + text in the UI) */
+  --color-success: #7ddba3;
+  --color-warning: #f2c879;
+  --color-danger: #ffb4ab;
+
+  /* fonts (variables are set by next/font in layout.tsx) */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  /* No third font: codes and timecodes use the body font with tabular (even-width) numbers. */
+  --font-mono: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /* radii: 12 / 16 / 20 */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+
+  /* soft shadows */
+  --shadow-card: 0 24px 64px -24px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.25);
+  --shadow-glow: 0 8px 28px -8px color-mix(in srgb, var(--color-accent) 55%, transparent);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  color-scheme: dark;
+  background: var(--color-bg);
 }
 
+/* No background on body: the fixed .atmosphere layer (z-index -1) must show through,
+   and a body background would paint over it. <html> provides the base color. */
 body {
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgb(251 191 36 / 0.08), transparent 60%),
-    radial-gradient(900px 500px at 110% 10%, rgb(244 63 94 / 0.06), transparent 60%),
-    var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
+/* ==========================================================================
+   Atmosphere: three soft purple glows behind everything.
+   It's a fixed layer (see layout.tsx) so it never scrolls or repaints with content.
+   In the Room (any page with <main data-stage>) it dims so the video stays the focus.
+   ========================================================================== */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 12%, color-mix(in srgb, var(--color-violet) 35%, transparent), transparent 70%),
+    radial-gradient(ellipse 55% 60% at 0% 100%, color-mix(in srgb, var(--color-deep) 50%, transparent), transparent 70%),
+    radial-gradient(ellipse 45% 45% at 100% 0%, color-mix(in srgb, var(--color-accent) 15%, transparent), transparent 70%),
+    var(--color-bg);
+  transition: opacity 600ms ease;
+}
+body:has(main[data-stage]) .atmosphere {
+  opacity: 0.35;
+}
+
+/* ==========================================================================
+   Legacy helper classes, re-pointed at the tokens. Step 2 replaces their
+   call sites with the shared components in src/components/ui.
+   ========================================================================== */
 @layer components {
   .btn-primary {
-    @apply rounded-lg bg-amber-400 px-3 py-1.5 text-sm font-semibold text-black transition hover:bg-amber-300 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40;
+    @apply min-h-11 rounded-sm bg-accent px-4 text-sm font-semibold text-on-accent transition hover:bg-accent-hover active:bg-accent-pressed disabled:cursor-not-allowed disabled:opacity-40;
   }
   .btn-ghost {
-    @apply rounded-lg bg-white/5 px-3 py-1.5 text-sm text-zinc-200 ring-1 ring-white/10 transition hover:bg-white/10 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40;
+    @apply min-h-11 rounded-sm border border-accent/20 bg-field px-3 text-sm text-fg transition hover:border-accent/40 disabled:cursor-not-allowed disabled:opacity-40;
   }
   .btn-chip {
-    @apply rounded-full bg-white/5 px-2.5 py-1 text-xs text-zinc-200 ring-1 ring-white/10 transition hover:bg-white/15 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40;
+    @apply min-h-9 rounded-full border border-accent/20 bg-field px-3 text-xs text-fg-muted transition hover:border-accent/40 hover:text-fg disabled:cursor-not-allowed disabled:opacity-40;
   }
   .chip {
-    @apply rounded-full px-2.5 py-1 text-zinc-300 ring-1 ring-white/10 transition hover:bg-white/10;
+    @apply rounded-full border border-accent/20 px-3 py-1.5 text-fg-muted transition hover:border-accent/40;
   }
   .chip-on {
-    @apply bg-amber-400 text-black ring-amber-400 hover:bg-amber-300;
+    @apply border-accent bg-accent text-on-accent hover:bg-accent-hover;
   }
   .input {
-    @apply rounded-lg bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100 ring-1 ring-white/10 outline-none placeholder:text-zinc-500 focus:ring-amber-400;
+    @apply min-h-11 rounded-sm border border-accent/22 bg-field px-3 text-sm text-fg outline-none placeholder:text-fg-subtle focus:border-accent focus:ring-2 focus:ring-accent/40;
   }
+}
+
+/* Visible keyboard focus everywhere */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 @keyframes float-up {
@@ -47,6 +117,8 @@ body {
   15% { transform: translateY(-20px) scale(1.15); opacity: 1; }
   100% { transform: translateY(-260px) scale(1); opacity: 0; }
 }
+.font-mono { font-variant-numeric: tabular-nums; }
+
 .float-up { animation: float-up 2.5s ease-out forwards; }
 
 @keyframes pop {
@@ -57,5 +129,10 @@ body {
 .pop { animation: pop 1s ease-out forwards; }
 
 @media (prefers-reduced-motion: reduce) {
-  .float-up, .pop { animation-duration: 0.01ms; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

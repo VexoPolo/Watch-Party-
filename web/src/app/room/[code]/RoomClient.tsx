@@ -85,7 +85,7 @@ function Room({ roomCode, memberId, name }: { roomCode: string; memberId: string
   const invite = typeof window !== "undefined" ? `${window.location.origin}/room/${roomCode}` : "";
 
   return (
-    <main className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col gap-4 p-3 md:p-5">
+    <main data-stage className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col gap-4 p-3 md:p-5">
       <header className="flex flex-wrap items-center gap-3">
         <Link href="/" className="text-lg font-black tracking-tight">
           Couch<span className="text-amber-400">.</span>
