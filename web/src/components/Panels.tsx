@@ -15,7 +15,11 @@ export function ChatPanel({ state, actions, canControl }: P) {
   const [text, setText] = useState("");
   const [pollOpen, setPollOpen] = useState(false);
   const end = useRef<HTMLDivElement>(null);
-  useEffect(() => end.current?.scrollIntoView({ block: "end" }), [state.chat.length]);
+  // Braces matter: newer browsers make scrollIntoView() return a Promise, and React treats
+  // anything an effect returns as its cleanup function.
+  useEffect(() => {
+    end.current?.scrollIntoView({ block: "end" });
+  }, [state.chat.length]);
 
   return (
     <div className="flex h-full min-h-0 flex-col">
