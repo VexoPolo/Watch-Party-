@@ -211,7 +211,7 @@ export function Player({ engine, state, actions, canControl }: { engine: SyncEng
 
       {/* Floating control bar. Translucent but no backdrop blur: blurring over video costs a lot of GPU. */}
       {media && (
-        <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg/90 via-bg/55 to-transparent px-3 pb-3 pt-10 sm:px-4 sm:pb-4">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg/95 from-60% via-bg/85 to-transparent px-3 pb-3 pt-12 sm:px-4 sm:pb-4">
           {/* heatmap + scrubber */}
           <div className="relative">
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-3 flex h-3 items-end gap-px">
@@ -241,7 +241,7 @@ export function Player({ engine, state, actions, canControl }: { engine: SyncEng
               onClick={onScrubClick}
               onKeyDown={onScrubKey}
               title={canControl ? "Seek for everyone" : "Only the host can seek"}
-              className={cx("relative flex h-6 items-end rounded-sm", canControl ? "cursor-pointer" : "cursor-not-allowed")}
+              className={cx("relative flex h-6 items-end rounded-sm pointer-coarse:h-11", canControl ? "cursor-pointer" : "cursor-not-allowed")}
             >
               <div className="relative mb-1 h-1 w-full rounded-full bg-fg/20 transition-[height] group-hover:h-1.5">
                 <div className="h-full rounded-full bg-accent" style={{ width: `${pct}%` }} />

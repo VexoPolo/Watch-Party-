@@ -60,7 +60,7 @@ export function SegmentedControl<T extends string>({
             onClick={() => onChange(s.value)}
             onKeyDown={(e) => onKey(e, i)}
             className={cx(
-              "flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-sm px-2 text-sm font-semibold transition-colors duration-150",
+              "flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm px-2 text-sm font-semibold transition-colors duration-150",
               active ? "bg-accent/15 text-fg shadow-[inset_0_0_0_1px] shadow-accent/30" : "text-fg-subtle hover:text-fg-muted",
             )}
           >

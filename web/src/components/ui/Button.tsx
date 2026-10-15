@@ -20,9 +20,10 @@ const variants: Record<Variant, string> = {
   danger: "border border-danger/40 bg-danger/10 text-danger hover:bg-danger/15",
 };
 
-// Every size keeps a ≥44px touch target, except "sm", which is only for dense desktop rows.
+// md/lg are always ≥44px. "sm" is 36px with a mouse but grows to 44px on touch screens
+// (pointer-coarse = finger-sized pointer), so every touch target is at least 44px.
 const sizes: Record<Size, string> = {
-  sm: "min-h-9 gap-1.5 rounded-sm px-3 text-sm",
+  sm: "min-h-9 gap-1.5 rounded-sm px-3 text-sm pointer-coarse:min-h-11",
   md: "min-h-11 gap-2 rounded-sm px-4 text-[15px]",
   lg: "min-h-13 gap-2 rounded-md px-5 text-base",
 };
@@ -54,7 +55,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 /** Square icon-only button. `label` is required: it becomes the aria-label and tooltip. */
 export const IconButton = forwardRef<HTMLButtonElement, Omit<ButtonProps, "icon" | "children"> & { label: string; children: ReactNode }>(
   function IconButton({ label, variant = "ghost", size = "md", className, children, ...rest }, ref) {
-    const box = size === "sm" ? "h-9 w-9" : size === "lg" ? "h-13 w-13" : "h-11 w-11";
+    const box = size === "sm" ? "h-9 w-9 pointer-coarse:h-11 pointer-coarse:w-11" : size === "lg" ? "h-13 w-13" : "h-11 w-11";
     return (
       <button
         ref={ref}

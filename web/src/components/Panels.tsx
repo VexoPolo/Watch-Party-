@@ -42,7 +42,7 @@ export function ChatPanel({ state, actions, canControl }: P) {
                 </span>
                 {m.videoPos !== null && (
                   <button
-                    className="rounded-[6px] px-1 font-mono text-xs text-fg-subtle hover:bg-accent/10 hover:text-accent disabled:hover:bg-transparent disabled:hover:text-fg-subtle"
+                    className="inline-flex items-center justify-center rounded-[6px] px-1 font-mono text-xs text-fg-subtle pointer-coarse:min-h-11 pointer-coarse:min-w-11 hover:bg-accent/10 hover:text-accent disabled:hover:bg-transparent disabled:hover:text-fg-subtle"
                     title={canControl ? "Jump the room to this moment" : "Moment in the video"}
                     aria-label={`Jump to ${fmtTime(m.videoPos)}`}
                     disabled={!canControl}

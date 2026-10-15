@@ -139,7 +139,15 @@ function Room({ roomCode, memberId, name }: { roomCode: string; memberId: string
   const reconnecting = state.status === "reconnecting";
 
   return (
-    <main data-stage className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-3 p-3 lg:h-dvh lg:gap-4 lg:p-4">
+    <main
+      data-stage
+      className={cx(
+        "mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-3 p-3 lg:h-dvh lg:gap-4 lg:p-4",
+        sidebarOpen ? "max-lg:pb-[calc(55dvh+12px)]" : "max-lg:pb-[136px]",
+      )}
+    >
+      {/* Invisible, but tells screen-reader users where they are. */}
+      <h1 className="sr-only">Watch party, room {roomCode}</h1>
       <TopBar
         engine={engine}
         state={state}
@@ -179,18 +187,35 @@ function Room({ roomCode, memberId, name }: { roomCode: string; memberId: string
           id="room-sidebar"
           aria-label="Room sidebar"
           className={cx(
-            "flex min-h-0 flex-col overflow-hidden rounded-lg border border-accent/20 bg-surface/70 shadow-card backdrop-blur-xl transition-[width,opacity,transform] duration-300 ease-out",
-            "max-lg:min-h-[480px]",
-            sidebarOpen ? "lg:w-[380px] lg:translate-x-0 lg:opacity-100" : "max-lg:hidden lg:w-0 lg:translate-x-4 lg:border-0 lg:opacity-0",
+            "flex min-h-0 flex-col overflow-hidden border border-accent/20 bg-surface/80 shadow-card backdrop-blur-xl ease-out",
+            // Phones/tablets: a bottom sheet under the video. Expanded = 55% of the screen; collapsed = handle + tabs.
+            "max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-30 max-lg:rounded-t-lg max-lg:border-b-0 max-lg:transition-[height] max-lg:duration-300",
+            sidebarOpen ? "max-lg:h-[55dvh]" : "max-lg:h-[124px]",
+            // Desktop: a panel that slides in from the right.
+            "lg:rounded-lg lg:transition-[width,opacity,transform] lg:duration-300",
+            sidebarOpen ? "lg:w-[380px] lg:translate-x-0 lg:opacity-100" : "lg:w-0 lg:translate-x-4 lg:border-0 lg:opacity-0",
           )}
         >
           <div className="flex min-h-0 flex-1 flex-col lg:w-[380px]">
-            <div className="p-3 pb-0">
+            <button
+              type="button"
+              onClick={() => setSidebarOpen((o) => !o)}
+              aria-expanded={sidebarOpen}
+              aria-controls="room-sidebar"
+              aria-label={sidebarOpen ? "Collapse panel" : "Expand panel"}
+              className="flex min-h-11 w-full shrink-0 items-center justify-center lg:hidden"
+            >
+              <span aria-hidden className="h-1 w-10 rounded-full bg-fg-subtle/60" />
+            </button>
+            <div className="px-3 lg:p-3 lg:pb-0">
               <SegmentedControl<Tab>
                 label="Room sidebar"
                 idPrefix="room"
                 value={tab}
-                onChange={setTab}
+                onChange={(t) => {
+                  setTab(t);
+                  setSidebarOpen(true);
+                }}
                 segments={[
                   { value: "chat", label: "Chat", badge: tab === "chat" ? 0 : chatCount - seenChat },
                   { value: "people", label: "People" },

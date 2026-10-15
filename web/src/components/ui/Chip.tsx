@@ -8,7 +8,7 @@ export function Chip({ selected, className, ...rest }: ButtonHTMLAttributes<HTML
     <button
       aria-pressed={selected}
       className={cx(
-        "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm transition-colors duration-150",
+        "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm pointer-coarse:min-h-11 transition-colors duration-150",
         selected ? "border-accent bg-accent text-on-accent" : "border-accent/22 text-fg-muted hover:border-accent/45 hover:text-fg",
         className,
       )}
