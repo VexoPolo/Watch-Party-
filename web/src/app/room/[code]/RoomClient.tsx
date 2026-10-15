@@ -3,21 +3,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { ArrowLeft, LogIn, SearchX } from "lucide-react";
 import { useRoom } from "@/hooks/useRoom";
 import { getMemberId, getName, setName } from "@/lib/identity";
 import { Player } from "@/components/Player";
-import { BrowsePanel, ChatPanel, PeoplePanel, PlaylistPanel } from "@/components/Panels";
-import { CatchUpCard, PollCard, ReadyCard, Toasts } from "@/components/Cards";
+import { TopBar } from "@/components/RoomChrome";
+import { ChatPanel, PeoplePanel, PollsPanel, QueuePanel } from "@/components/Panels";
+import { CatchUpModal, PollCard, ReadyCard } from "@/components/Cards";
+import { Banner, Button, Card, Input, SegmentedControl, Spinner, ToastStack, cx } from "@/components/ui";
 
-const TABS = ["Chat", "Playlist", "Browse", "People"] as const;
-type Tab = (typeof TABS)[number];
+type Tab = "chat" | "people" | "queue" | "polls";
 
 export default function RoomClient() {
   const { code } = useParams<{ code: string }>();
   const roomCode = String(code).toUpperCase();
   const [memberId, setMemberId] = useState<string>("");
   const [name, setNameState] = useState<string | null>(null);
-  const [draft, setDraft] = useState("");
 
   useEffect(() => {
     // sessionStorage/localStorage only exist in the browser, so read them after the first render.
@@ -27,116 +28,189 @@ export default function RoomClient() {
     if (n) setNameState(n);
   }, []);
 
-  if (!memberId) return null;
-  if (!name)
-    return (
-      <main className="grid flex-1 place-items-center p-4">
+  if (!memberId) return <CenteredStatus title="Loading room…" />;
+  if (!name) return <NameGate roomCode={roomCode} onName={setNameState} />;
+  return <Room roomCode={roomCode} memberId={memberId} name={name} />;
+}
+
+/** Someone opened an invite link without a saved nickname. */
+function NameGate({ roomCode, onName }: { roomCode: string; onName: (n: string) => void }) {
+  const [draft, setDraft] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <main className="grid flex-1 place-items-center px-3 py-8">
+      <Card className="w-full max-w-[420px] p-5 sm:p-8">
+        <p className="flex items-center gap-2 font-display text-lg font-semibold text-fg">
+          <span aria-hidden className="h-2 w-2 rounded-full bg-accent" />
+          Couch
+        </p>
+        <h1 className="mt-6 font-display text-[32px] font-bold leading-tight text-fg">
+          You&apos;re invited
+          <span className="block text-accent">to room {roomCode}</span>
+        </h1>
         <form
-          className="w-full max-w-sm space-y-3 rounded-3xl bg-zinc-900/80 p-6 ring-1 ring-white/10"
+          className="mt-6 space-y-4"
+          noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            if (!draft.trim()) return;
-            setName(draft.trim());
-            setNameState(draft.trim());
+            const n = draft.trim();
+            if (!n) return setError("Add a nickname to continue");
+            setName(n);
+            onName(n);
           }}
         >
-          <p className="text-sm text-zinc-400">
-            You&apos;re invited to room <b className="font-mono text-amber-300">{roomCode}</b>
-          </p>
-          <input autoFocus className="input w-full py-2" placeholder="Your nickname" value={draft} onChange={(e) => setDraft(e.target.value)} maxLength={24} />
-          <button className="btn-primary w-full py-2.5">Join the party</button>
+          <Input
+            autoFocus
+            label="Your display name"
+            hint="Visible to room"
+            placeholder="e.g. Julian"
+            maxLength={24}
+            value={draft}
+            error={error}
+            onChange={(e) => {
+              setDraft(e.target.value);
+              setError(null);
+            }}
+          />
+          <Button type="submit" size="lg" className="w-full" icon={<LogIn size={20} strokeWidth={1.75} aria-hidden />}>
+            Join the party
+          </Button>
         </form>
-      </main>
-    );
+      </Card>
+    </main>
+  );
+}
 
-  return <Room roomCode={roomCode} memberId={memberId} name={name} />;
+function CenteredStatus({ title, detail }: { title: string; detail?: string }) {
+  return (
+    <main className="grid flex-1 place-items-center p-6 text-center" aria-busy="true">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner className="h-8 w-8 text-accent" />
+        <p className="font-display text-lg font-semibold text-fg">{title}</p>
+        {detail && <p className="max-w-sm text-sm text-fg-muted">{detail}</p>}
+      </div>
+    </main>
+  );
 }
 
 function Room({ roomCode, memberId, name }: { roomCode: string; memberId: string; name: string }) {
   const { state, engine, actions } = useRoom(roomCode, memberId, name);
-  const [tab, setTab] = useState<Tab>("Chat");
+  const [tab, setTab] = useState<Tab>("chat");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [catchUpOpen, setCatchUpOpen] = useState(false);
+  const [seenChat, setSeenChat] = useState(0);
   const isHost = state.hostId === state.you;
   const canControl = state.controlMode === "everyone" || isHost;
-  const onlineCount = state.members.filter((m) => m.online).length;
+  const chatCount = state.chat.filter((m) => !m.system).length;
+
+  // Messages count as read while the Chat tab is visible.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (tab === "chat" && sidebarOpen) setSeenChat(chatCount);
+  }, [tab, sidebarOpen, chatCount]);
 
   if (state.status === "error")
     return (
-      <main className="grid flex-1 place-items-center p-6 text-center">
-        <div>
-          <p className="text-xl font-semibold">{state.error}</p>
-          <Link href="/" className="btn-primary mt-4 inline-block">
-            Back home
+      <main className="grid flex-1 place-items-center px-3 py-8">
+        <Card className="w-full max-w-[420px] p-6 text-center sm:p-8">
+          <SearchX size={40} strokeWidth={1.25} aria-hidden className="mx-auto text-accent" />
+          <h1 className="mt-4 font-display text-2xl font-bold text-fg">Room not found</h1>
+          <p className="mt-2 text-fg-muted">
+            We couldn&apos;t find room <span className="font-mono font-semibold tracking-[0.12em] text-fg">{roomCode}</span>. Check the code, or it may have expired after
+            everyone left.
+          </p>
+          <Link href="/" className="mt-6 inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-md bg-accent px-5 font-semibold text-on-accent hover:bg-accent-hover">
+            <ArrowLeft size={20} strokeWidth={1.75} aria-hidden />
+            Start or join another room
           </Link>
-        </div>
+        </Card>
       </main>
     );
 
   if (!engine || state.status === "connecting")
     return (
-      <main className="grid flex-1 place-items-center p-6 text-center text-zinc-400">
-        <div>
-          <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
-          <p>Joining {roomCode}…</p>
-          {state.slowStart && <p className="mt-1 text-sm">Waking the sync server (free hosting sleeps when idle). This can take up to a minute.</p>}
-        </div>
-      </main>
+      <CenteredStatus
+        title={`Joining ${roomCode}…`}
+        detail={state.slowStart ? "Waking the sync server. Free hosting sleeps when idle, so this can take up to a minute." : undefined}
+      />
     );
 
-  const invite = typeof window !== "undefined" ? `${window.location.origin}/room/${roomCode}` : "";
+  const pollOpen = !!state.poll && !state.poll.closed;
+  const reconnecting = state.status === "reconnecting";
 
   return (
-    <main data-stage className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col gap-4 p-3 md:p-5">
-      <header className="flex flex-wrap items-center gap-3">
-        <Link href="/" className="text-lg font-black tracking-tight">
-          Couch<span className="text-amber-400">.</span>
-        </Link>
-        <button
-          className="btn-ghost font-mono"
-          title="Copy invite link"
-          onClick={() => {
-            void navigator.clipboard?.writeText(invite);
-            actions.toast("Invite link copied — send it to your friends");
-          }}
-        >
-          {roomCode} · 🔗 copy invite
-        </button>
-        <span className="text-sm text-zinc-400">
-          {onlineCount} watching{isHost ? " · you're the host 👑" : ""}
-          {state.controlMode === "host" ? " · host-only controls" : ""}
-        </span>
-        {state.status === "reconnecting" && <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs text-amber-300">Reconnecting… controls paused</span>}
-      </header>
+    <main data-stage className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-3 p-3 lg:h-dvh lg:gap-4 lg:p-4">
+      <TopBar
+        engine={engine}
+        state={state}
+        actions={actions}
+        roomCode={roomCode}
+        sidebarOpen={sidebarOpen}
+        onToggleSidebar={() => setSidebarOpen((o) => !o)}
+        onCatchUp={() => setCatchUpOpen(true)}
+      />
 
-      <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <div className={`flex flex-col gap-3 ${state.status === "reconnecting" ? "pointer-events-none opacity-60" : ""}`}>
-          <Player engine={engine} state={state} actions={actions} canControl={canControl} />
-          <div className="grid gap-3 md:grid-cols-2">
-            <ReadyCard state={state} actions={actions} canControl={canControl} />
-            <PollCard state={state} actions={actions} engine={engine} />
+      {reconnecting && (
+        <Banner tone="warning" title="Reconnecting…">
+          You&apos;ll rejoin in sync automatically. Controls are paused until then.
+        </Banner>
+      )}
+
+      <div className="flex min-h-0 flex-1 flex-col gap-3 lg:flex-row lg:gap-4">
+        {/* Stage: video + floating banners. No backdrop blur in here (performance). */}
+        <section aria-label="Video" className={cx("relative flex min-h-0 flex-1 flex-col", reconnecting && "pointer-events-none opacity-60")}>
+          <div className="relative aspect-video w-full lg:aspect-auto lg:h-full">
+            <Player engine={engine} state={state} actions={actions} canControl={canControl} />
+            {(state.ready.active || pollOpen || state.poll?.closed) && (
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden flex-col items-center gap-2 p-3 sm:flex [&>*]:pointer-events-auto">
+                <ReadyCard state={state} actions={actions} canControl={canControl} />
+                <PollCard state={state} actions={actions} engine={engine} compact />
+              </div>
+            )}
           </div>
-        </div>
+          {/* On small screens the banners sit under the video instead of covering it. */}
+          <div className="mt-3 flex flex-col gap-3 sm:hidden">
+            <ReadyCard state={state} actions={actions} canControl={canControl} />
+            <PollCard state={state} actions={actions} engine={engine} compact />
+          </div>
+        </section>
 
-        <aside className="flex min-h-[420px] flex-col rounded-2xl bg-zinc-900/70 ring-1 ring-white/10 lg:max-h-[calc(100vh-110px)]">
-          <nav className="flex border-b border-white/10 p-1">
-            {TABS.map((t) => (
-              <button key={t} onClick={() => setTab(t)} className={`flex-1 rounded-lg py-2 text-sm ${tab === t ? "bg-white/10 font-semibold" : "text-zinc-400 hover:text-zinc-200"}`}>
-                {t}
-                {t === "Playlist" && state.playlist.length > 0 && <span className="ml-1 text-xs text-amber-300">{state.playlist.length}</span>}
-                {t === "People" && <span className="ml-1 text-xs text-zinc-500">{onlineCount}</span>}
-              </button>
-            ))}
-          </nav>
-          <div className="min-h-0 flex-1 overflow-y-auto p-3">
-            {tab === "Chat" && <ChatPanel state={state} actions={actions} canControl={canControl} />}
-            {tab === "Playlist" && <PlaylistPanel state={state} actions={actions} canControl={canControl} />}
-            {tab === "Browse" && <BrowsePanel state={state} actions={actions} canControl={canControl} />}
-            {tab === "People" && <PeoplePanel state={state} actions={actions} canControl={canControl} />}
+        <aside
+          id="room-sidebar"
+          aria-label="Room sidebar"
+          className={cx(
+            "flex min-h-0 flex-col overflow-hidden rounded-lg border border-accent/20 bg-surface/70 shadow-card backdrop-blur-xl transition-[width,opacity,transform] duration-300 ease-out",
+            "max-lg:min-h-[480px]",
+            sidebarOpen ? "lg:w-[380px] lg:translate-x-0 lg:opacity-100" : "max-lg:hidden lg:w-0 lg:translate-x-4 lg:border-0 lg:opacity-0",
+          )}
+        >
+          <div className="flex min-h-0 flex-1 flex-col lg:w-[380px]">
+            <div className="p-3 pb-0">
+              <SegmentedControl<Tab>
+                label="Room sidebar"
+                idPrefix="room"
+                value={tab}
+                onChange={setTab}
+                segments={[
+                  { value: "chat", label: "Chat", badge: tab === "chat" ? 0 : chatCount - seenChat },
+                  { value: "people", label: "People" },
+                  { value: "queue", label: "Queue", badge: state.playlist.length },
+                  { value: "polls", label: "Polls", badge: pollOpen ? 1 : 0 },
+                ]}
+              />
+            </div>
+            <div role="tabpanel" id={`room-panel-${tab}`} aria-labelledby={`room-tab-${tab}`} className="min-h-0 flex-1 overflow-y-auto p-4">
+              {tab === "chat" && <ChatPanel state={state} actions={actions} canControl={canControl} />}
+              {tab === "people" && <PeoplePanel state={state} actions={actions} canControl={canControl} />}
+              {tab === "queue" && <QueuePanel state={state} actions={actions} canControl={canControl} />}
+              {tab === "polls" && <PollsPanel state={state} actions={actions} canControl={canControl} engine={engine} />}
+            </div>
           </div>
         </aside>
       </div>
 
-      <CatchUpCard state={state} actions={actions} canControl={canControl} />
-      <Toasts toasts={state.toasts} />
+      <CatchUpModal state={state} actions={actions} canControl={canControl} open={catchUpOpen} onClose={() => setCatchUpOpen(false)} />
+      <ToastStack toasts={state.toasts} />
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
-import { CircleAlert, CircleCheck, LoaderCircle, TriangleAlert } from "lucide-react";
+import { CircleAlert, CircleCheck, CircleDashed, LoaderCircle, TriangleAlert } from "lucide-react";
 import { cx } from "./cx";
 
 /** Toggleable filter chip (e.g. genre). `selected` sets aria-pressed for screen readers. */
@@ -31,7 +31,7 @@ const toneIcon: Record<Tone, ReactNode> = {
   success: <CircleCheck aria-hidden size={14} strokeWidth={2} />,
   warning: <TriangleAlert aria-hidden size={14} strokeWidth={2} />,
   danger: <CircleAlert aria-hidden size={14} strokeWidth={2} />,
-  neutral: null,
+  neutral: <CircleDashed aria-hidden size={14} strokeWidth={2} />,
   busy: <LoaderCircle aria-hidden size={14} strokeWidth={2} className="animate-spin" />,
 };
 

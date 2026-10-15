@@ -17,6 +17,8 @@ export interface PlayerAdapter {
   isStalled(): boolean;
   /** Average seconds a seek takes to land (used to aim seeks slightly ahead). */
   seekLagSec(): number;
+  /** Local-only volume (0–1). Not part of sync: each viewer controls their own. */
+  setVolume(volume: number, muted: boolean): void;
   destroy(): void;
 }
 
@@ -67,6 +69,10 @@ export class Html5Adapter implements PlayerAdapter {
   seekLagSec() {
     return this.lag;
   }
+  setVolume(volume: number, muted: boolean) {
+    this.el.volume = Math.min(1, Math.max(0, volume));
+    this.el.muted = muted;
+  }
   destroy() {
     this.el.removeEventListener("seeked", this.onSeeked);
   }
@@ -82,6 +88,9 @@ interface YTPlayer {
   getCurrentTime(): number;
   getDuration(): number;
   getPlayerState(): number;
+  setVolume(v: number): void;
+  mute(): void;
+  unMute(): void;
   destroy(): void;
 }
 declare global {
@@ -169,6 +178,12 @@ export class YouTubeAdapter implements PlayerAdapter {
   }
   seekLagSec() {
     return 0.15;
+  }
+  setVolume(volume: number, muted: boolean) {
+    if (!this.ready) return;
+    this.player!.setVolume(Math.round(Math.min(1, Math.max(0, volume)) * 100));
+    if (muted) this.player!.mute();
+    else this.player!.unMute();
   }
   isReady() {
     return this.ready;
