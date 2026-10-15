@@ -145,7 +145,7 @@ export function Player({ engine, state, actions, canControl }: { engine: SyncEng
   const VolumeIcon = muted || volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
 
   return (
-    <div ref={stageRef} className="group relative isolate flex h-full min-h-0 w-full items-center justify-center overflow-hidden rounded-lg bg-black">
+    <div ref={stageRef} className="group relative isolate flex h-full min-h-0 w-full items-center justify-center overflow-hidden rounded-lg bg-stage">
       {media?.kind === "html5" && (
         <video
           key={media.src}

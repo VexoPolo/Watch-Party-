@@ -11,6 +11,7 @@
   --color-bg: #0b090e;
   --color-surface: #17131d;
   --color-field: #1f1826;
+  --color-stage: #000000; /* behind the video: letterboxing should be true black */
 
   /* text */
   --color-fg: #ebe4f0;
@@ -79,31 +80,6 @@ body {
 }
 body:has(main[data-stage]) .atmosphere {
   opacity: 0.35;
-}
-
-/* ==========================================================================
-   Legacy helper classes, re-pointed at the tokens. Step 2 replaces their
-   call sites with the shared components in src/components/ui.
-   ========================================================================== */
-@layer components {
-  .btn-primary {
-    @apply min-h-11 rounded-sm bg-accent px-4 text-sm font-semibold text-on-accent transition hover:bg-accent-hover active:bg-accent-pressed disabled:cursor-not-allowed disabled:opacity-40;
-  }
-  .btn-ghost {
-    @apply min-h-11 rounded-sm border border-accent/20 bg-field px-3 text-sm text-fg transition hover:border-accent/40 disabled:cursor-not-allowed disabled:opacity-40;
-  }
-  .btn-chip {
-    @apply min-h-9 rounded-full border border-accent/20 bg-field px-3 text-xs text-fg-muted transition hover:border-accent/40 hover:text-fg disabled:cursor-not-allowed disabled:opacity-40;
-  }
-  .chip {
-    @apply rounded-full border border-accent/20 px-3 py-1.5 text-fg-muted transition hover:border-accent/40;
-  }
-  .chip-on {
-    @apply border-accent bg-accent text-on-accent hover:bg-accent-hover;
-  }
-  .input {
-    @apply min-h-11 rounded-sm border border-accent/22 bg-field px-3 text-sm text-fg outline-none placeholder:text-fg-subtle focus:border-accent focus:ring-2 focus:ring-accent/40;
-  }
 }
 
 /* Visible keyboard focus everywhere */

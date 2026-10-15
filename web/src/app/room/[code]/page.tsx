@@ -5,7 +5,7 @@ import RoomClient from "./RoomClient";
 // (via useParams) must sit inside a Suspense boundary when Cache Components is enabled.
 export default function RoomPage() {
   return (
-    <Suspense fallback={<p className="p-8 text-zinc-400">Loading room…</p>}>
+    <Suspense fallback={<p className="p-8 text-fg-muted">Loading room…</p>}>
       <RoomClient />
     </Suspense>
   );
