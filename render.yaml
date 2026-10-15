@@ -1,0 +1,13 @@
+# Render Blueprint for the sync server (free tier). In Render: New → Blueprint → pick this repo.
+services:
+  - type: web
+    name: couch-sync
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: CORS_ORIGIN
+        sync: false # set to your Vercel URL, e.g. https://couch.vercel.app

@@ -1,0 +1,503 @@
+[
+ {
+  "id": "bbb",
+  "title": "Big Buck Bunny",
+  "year": 2008,
+  "kind": "html5",
+  "src": "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
+  "poster": "https://archive.org/services/img/BigBuckBunny_124",
+  "runtimeMin": 10,
+  "genres": [
+   "animation",
+   "comedy",
+   "family"
+  ],
+  "moods": [
+   "silly",
+   "feel-good"
+  ],
+  "license": "CC BY 3.0",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "A giant, gentle rabbit takes hilarious revenge on three bullying rodents."
+ },
+ {
+  "id": "sintel",
+  "title": "Sintel",
+  "year": 2010,
+  "kind": "html5",
+  "src": "https://archive.org/download/Sintel/sintel-2048-stereo_512kb.mp4",
+  "poster": "https://archive.org/services/img/Sintel",
+  "runtimeMin": 15,
+  "genres": [
+   "animation",
+   "fantasy",
+   "adventure"
+  ],
+  "moods": [
+   "emotional",
+   "epic"
+  ],
+  "license": "CC BY 3.0",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "A lonely girl searches a harsh world for the baby dragon she once rescued."
+ },
+ {
+  "id": "elephants",
+  "title": "Elephants Dream",
+  "year": 2006,
+  "kind": "html5",
+  "src": "https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4",
+  "poster": "https://archive.org/services/img/ElephantsDream",
+  "runtimeMin": 11,
+  "genres": [
+   "animation",
+   "sci-fi",
+   "surreal"
+  ],
+  "moods": [
+   "weird",
+   "dark"
+  ],
+  "license": "CC BY 2.5",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Two men explore an infinite, ever-changing machine. The first open movie ever made."
+ },
+ {
+  "id": "cosmos",
+  "title": "Cosmos Laundromat: First Cycle",
+  "year": 2015,
+  "kind": "html5",
+  "src": "https://archive.org/download/CosmosLaundromatFirstCycle/Cosmos%20Laundromat%20-%20First%20Cycle%20%281080p%29.mp4",
+  "poster": "https://archive.org/services/img/CosmosLaundromatFirstCycle",
+  "runtimeMin": 12,
+  "genres": [
+   "animation",
+   "comedy",
+   "fantasy"
+  ],
+  "moods": [
+   "weird",
+   "funny"
+  ],
+  "license": "CC BY 4.0",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "A suicidal sheep meets a mysterious salesman who offers him the gift of a lifetime."
+ },
+ {
+  "id": "llama1",
+  "title": "Caminandes 1: Llama Drama",
+  "year": 2013,
+  "kind": "html5",
+  "src": "https://archive.org/download/Caminandes1LlamaDrama/01_llama_drama_1080p.mp4",
+  "poster": "https://archive.org/services/img/Caminandes1LlamaDrama",
+  "runtimeMin": 2,
+  "genres": [
+   "animation",
+   "comedy",
+   "family"
+  ],
+  "moods": [
+   "silly",
+   "quick"
+  ],
+  "license": "CC BY 3.0",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Koro the llama really wants to get to the other side of the road."
+ },
+ {
+  "id": "llama2",
+  "title": "Caminandes 2: Gran Dillama",
+  "year": 2013,
+  "kind": "html5",
+  "src": "https://archive.org/download/Caminandes2GranDillama/02_gran_dillama_1080p.mp4",
+  "poster": "https://archive.org/services/img/Caminandes2GranDillama",
+  "runtimeMin": 3,
+  "genres": [
+   "animation",
+   "comedy",
+   "family"
+  ],
+  "moods": [
+   "silly",
+   "quick"
+  ],
+  "license": "CC BY 3.0",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Koro faces an electric fence and a very determined appetite."
+ },
+ {
+  "id": "llama3",
+  "title": "Caminandes 3: Llamigos",
+  "year": 2016,
+  "kind": "html5",
+  "src": "https://archive.org/download/CaminandesLlamigos/Caminandes_%20Llamigos-1080p.mp4",
+  "poster": "https://archive.org/services/img/CaminandesLlamigos",
+  "runtimeMin": 3,
+  "genres": [
+   "animation",
+   "comedy",
+   "family"
+  ],
+  "moods": [
+   "silly",
+   "quick"
+  ],
+  "license": "CC BY 3.0",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Koro meets Oti the penguin in a winter battle over berries."
+ },
+ {
+  "id": "popeye",
+  "title": "Popeye the Sailor Meets Sindbad the Sailor",
+  "year": 1936,
+  "kind": "html5",
+  "src": "https://archive.org/download/POPEYEMeetsSindbadTheSailor1936/POPEYE%20meets%20Sindbad%20The%20Sailor%20%281936%29.mp4",
+  "poster": "https://archive.org/services/img/POPEYEMeetsSindbadTheSailor1936",
+  "runtimeMin": 17,
+  "genres": [
+   "animation",
+   "classic",
+   "adventure"
+  ],
+  "moods": [
+   "retro",
+   "funny"
+  ],
+  "license": "Public domain",
+  "credit": "Fleischer Studios (via Internet Archive)",
+  "description": "Popeye's first two-reel color special: spinach versus the boastful Sindbad."
+ },
+ {
+  "id": "superman",
+  "title": "Superman: The Mechanical Monsters",
+  "year": 1941,
+  "kind": "html5",
+  "src": "https://archive.org/download/superman_mechanical_monsters/superman_mechanical_monsters.mp4",
+  "poster": "https://archive.org/services/img/superman_mechanical_monsters",
+  "runtimeMin": 10,
+  "genres": [
+   "animation",
+   "classic",
+   "action"
+  ],
+  "moods": [
+   "retro",
+   "epic"
+  ],
+  "license": "Public domain",
+  "credit": "Fleischer Studios (via Internet Archive)",
+  "description": "A mad scientist's robots rob the city. A landmark of 1940s animation."
+ },
+ {
+  "id": "plan9",
+  "title": "Plan 9 from Outer Space",
+  "year": 1959,
+  "kind": "html5",
+  "src": "https://archive.org/download/plan-9-from-outer-space/plan-9-from-outer-space.mp4",
+  "poster": "https://archive.org/services/img/plan-9-from-outer-space",
+  "runtimeMin": 78,
+  "genres": [
+   "sci-fi",
+   "horror",
+   "classic"
+  ],
+  "moods": [
+   "so-bad-its-good",
+   "retro"
+  ],
+  "license": "Public domain",
+  "credit": "Ed Wood (via Internet Archive)",
+  "description": "Aliens raise the dead to stop humanity. Famously called the worst movie ever made, so perfect for group roasting."
+ },
+ {
+  "id": "shop",
+  "title": "The Little Shop of Horrors",
+  "year": 1960,
+  "kind": "html5",
+  "src": "https://archive.org/download/TheLittleShopOfHorrors1960/The-Little-Shop-of-Horrors_512kb.mp4",
+  "poster": "https://archive.org/services/img/TheLittleShopOfHorrors1960",
+  "runtimeMin": 73,
+  "genres": [
+   "comedy",
+   "horror",
+   "classic"
+  ],
+  "moods": [
+   "so-bad-its-good",
+   "funny"
+  ],
+  "license": "Public domain",
+  "credit": "Roger Corman (via Internet Archive)",
+  "description": "A florist's clerk raises a plant with a taste for human blood."
+ },
+ {
+  "id": "nosferatu",
+  "title": "Nosferatu",
+  "year": 1922,
+  "kind": "html5",
+  "src": "https://archive.org/download/Nosferatu_most_complete_version_93_mins./Nosferatu_1922_Symphony_of_Horror_512kb.mp4",
+  "poster": "https://archive.org/services/img/Nosferatu_most_complete_version_93_mins.",
+  "runtimeMin": 93,
+  "genres": [
+   "horror",
+   "classic",
+   "silent"
+  ],
+  "moods": [
+   "dark",
+   "atmospheric"
+  ],
+  "license": "Public domain",
+  "credit": "F. W. Murnau (via Internet Archive)",
+  "description": "The silent expressionist vampire classic that defined horror cinema."
+ },
+ {
+  "id": "friday",
+  "title": "His Girl Friday",
+  "year": 1940,
+  "kind": "html5",
+  "src": "https://archive.org/download/his_girl_friday/his_girl_friday_512kb.mp4",
+  "poster": "https://archive.org/services/img/his_girl_friday",
+  "runtimeMin": 92,
+  "genres": [
+   "comedy",
+   "romance",
+   "classic"
+  ],
+  "moods": [
+   "fast-talking",
+   "feel-good"
+  ],
+  "license": "Public domain",
+  "credit": "Howard Hawks (via Internet Archive)",
+  "description": "A newspaper editor schemes to win back his ex-wife and his best reporter."
+ },
+ {
+  "id": "yt-bbb",
+  "title": "Big Buck Bunny (4K, YouTube)",
+  "year": 2008,
+  "kind": "youtube",
+  "src": "aqz-KE-bpKQ",
+  "poster": "https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
+  "runtimeMin": 10,
+  "genres": [
+   "animation",
+   "comedy",
+   "family"
+  ],
+  "moods": [
+   "silly",
+   "feel-good"
+  ],
+  "license": "CC BY 3.0 (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "The 60 fps 4K remaster from the official Blender channel."
+ },
+ {
+  "id": "yt-sintel",
+  "title": "Sintel (YouTube)",
+  "year": 2010,
+  "kind": "youtube",
+  "src": "eRsGyueVLvQ",
+  "poster": "https://i.ytimg.com/vi/eRsGyueVLvQ/hqdefault.jpg",
+  "runtimeMin": 15,
+  "genres": [
+   "animation",
+   "fantasy",
+   "adventure"
+  ],
+  "moods": [
+   "emotional",
+   "epic"
+  ],
+  "license": "CC BY 3.0 (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Official upload of Sintel on the Blender channel."
+ },
+ {
+  "id": "yt-tos",
+  "title": "Tears of Steel",
+  "year": 2012,
+  "kind": "youtube",
+  "src": "R6MlUcmOul8",
+  "poster": "https://i.ytimg.com/vi/R6MlUcmOul8/hqdefault.jpg",
+  "runtimeMin": 12,
+  "genres": [
+   "sci-fi",
+   "action",
+   "live-action"
+  ],
+  "moods": [
+   "epic",
+   "dark"
+  ],
+  "license": "CC BY 3.0 (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Scientists in Amsterdam try to save the world from robots, with lots of VFX."
+ },
+ {
+  "id": "yt-spring",
+  "title": "Spring",
+  "year": 2019,
+  "kind": "youtube",
+  "src": "WhWc3b3KhnY",
+  "poster": "https://i.ytimg.com/vi/WhWc3b3KhnY/hqdefault.jpg",
+  "runtimeMin": 8,
+  "genres": [
+   "animation",
+   "fantasy"
+  ],
+  "moods": [
+   "emotional",
+   "beautiful"
+  ],
+  "license": "CC BY (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "A shepherd girl and her dog face ancient spirits to continue the cycle of life."
+ },
+ {
+  "id": "yt-agent",
+  "title": "Agent 327: Operation Barbershop",
+  "year": 2017,
+  "kind": "youtube",
+  "src": "mN0zPOpADL4",
+  "poster": "https://i.ytimg.com/vi/mN0zPOpADL4/hqdefault.jpg",
+  "runtimeMin": 4,
+  "genres": [
+   "animation",
+   "action",
+   "comedy"
+  ],
+  "moods": [
+   "funny",
+   "epic"
+  ],
+  "license": "CC BY (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Europe's secret agent goes undercover in a very dangerous barbershop."
+ },
+ {
+  "id": "yt-sprite",
+  "title": "Sprite Fright",
+  "year": 2021,
+  "kind": "youtube",
+  "src": "_cMxraX_5RE",
+  "poster": "https://i.ytimg.com/vi/_cMxraX_5RE/hqdefault.jpg",
+  "runtimeMin": 10,
+  "genres": [
+   "animation",
+   "horror",
+   "comedy"
+  ],
+  "moods": [
+   "funny",
+   "dark"
+  ],
+  "license": "CC BY (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Rowdy teens disturb the wrong forest: 80s horror meets cute mushroom sprites."
+ },
+ {
+  "id": "yt-coffee",
+  "title": "Coffee Run",
+  "year": 2020,
+  "kind": "youtube",
+  "src": "PVGeM40dABA",
+  "poster": "https://i.ytimg.com/vi/PVGeM40dABA/hqdefault.jpg",
+  "runtimeMin": 3,
+  "genres": [
+   "animation",
+   "surreal"
+  ],
+  "moods": [
+   "quick",
+   "weird"
+  ],
+  "license": "CC BY (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Fueled by caffeine, a young woman runs through the bittersweet memories of a past relationship."
+ },
+ {
+  "id": "yt-charge",
+  "title": "Charge",
+  "year": 2022,
+  "kind": "youtube",
+  "src": "UXqq0ZvbOnk",
+  "poster": "https://i.ytimg.com/vi/UXqq0ZvbOnk/hqdefault.jpg",
+  "runtimeMin": 4,
+  "genres": [
+   "animation",
+   "action",
+   "sci-fi"
+  ],
+  "moods": [
+   "epic",
+   "dark"
+  ],
+  "license": "CC BY (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "In a dystopian future, an old man breaks into a battery factory."
+ },
+ {
+  "id": "yt-hero",
+  "title": "Hero",
+  "year": 2018,
+  "kind": "youtube",
+  "src": "pKmSdY56VtY",
+  "poster": "https://i.ytimg.com/vi/pKmSdY56VtY/hqdefault.jpg",
+  "runtimeMin": 4,
+  "genres": [
+   "animation",
+   "action"
+  ],
+  "moods": [
+   "epic",
+   "quick"
+  ],
+  "license": "CC BY (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "A hand-drawn 2D/3D Grease Pencil action showcase."
+ },
+ {
+  "id": "yt-cosmos",
+  "title": "Cosmos Laundromat (YouTube)",
+  "year": 2015,
+  "kind": "youtube",
+  "src": "Y-rmzh0PI3c",
+  "poster": "https://i.ytimg.com/vi/Y-rmzh0PI3c/hqdefault.jpg",
+  "runtimeMin": 12,
+  "genres": [
+   "animation",
+   "comedy",
+   "fantasy"
+  ],
+  "moods": [
+   "weird",
+   "funny"
+  ],
+  "license": "CC BY 4.0 (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Official upload of Cosmos Laundromat: First Cycle."
+ },
+ {
+  "id": "yt-llama3",
+  "title": "Caminandes 3: Llamigos (YouTube)",
+  "year": 2016,
+  "kind": "youtube",
+  "src": "SkVqJ1SGeL0",
+  "poster": "https://i.ytimg.com/vi/SkVqJ1SGeL0/hqdefault.jpg",
+  "runtimeMin": 3,
+  "genres": [
+   "animation",
+   "comedy",
+   "family"
+  ],
+  "moods": [
+   "silly",
+   "quick"
+  ],
+  "license": "CC BY 3.0 (YouTube embed)",
+  "credit": "Blender Foundation / Blender Studio",
+  "description": "Official upload of Llamigos."
+ }
+]
