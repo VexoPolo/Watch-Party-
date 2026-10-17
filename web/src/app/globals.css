@@ -104,6 +104,18 @@ body:has(main[data-stage]) .atmosphere {
 }
 .pop { animation: pop 1s ease-out forwards; }
 
+/* InfiniteSlider: the track holds two copies of its items, so sliding by -50% loops seamlessly. */
+@keyframes slide-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes slide-y {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+.slide-x { animation: slide-x 40s linear infinite; will-change: transform; }
+.slide-y { animation: slide-y 40s linear infinite; will-change: transform; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -111,4 +123,149 @@ body:has(main[data-stage]) .atmosphere {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ==========================================================================
+   Landing hero, "Same couch, different cities" (components/SameCouchHero.tsx).
+   JS writes scroll progress to --p (0 → 1) on .hero; every layer derives its own
+   transform / opacity from it. Only transform and opacity animate (plus the SVG
+   stroke-dashoffset that draws the sync lines).
+   Per-element windows: an element with --a / --b gets --t = its own 0 → 1 between them.
+   ========================================================================== */
+.hero {
+  --p: 0;
+  /* "slightly out of sync" viewers: the accent warmed toward amber. Purple replaces
+     the Sync-Health green here only; the real panel keeps its status colors. */
+  --hero-late: color-mix(in srgb, var(--color-warning) 55%, var(--color-accent));
+  position: relative;
+  height: 320vh; /* 220vh of scroll: the whole story */
+}
+.hero-intro, .hero-card, .hero-line, .hero-viewer, .hero-late, .hero-synced {
+  --t: clamp(0, (var(--p) - var(--a)) / (var(--b) - var(--a)), 1);
+}
+.hero-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg) 0%,
+    color-mix(in srgb, var(--color-deep) 55%, var(--color-bg)) 62%,
+    var(--color-bg) 100%
+  );
+}
+.hero-scene { position: absolute; inset: 0; }
+.hero-layer { position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform; }
+.hero-layer > svg { display: block; width: 100%; height: 100%; }
+
+/* Parallax = moving toward the screen at the centre: nearer layers grow faster. */
+.hero-stars { opacity: calc(1 - var(--p) * 0.6); transform: scale(calc(1 + var(--p) * 0.03)); } /* washed out by the screen's light */
+.hero-far { transform: scale(calc(1 + var(--p) * 0.08)); }
+.hero-city { transform: scale(calc(1 + var(--p) * 0.22)); }
+.hero-near {
+  transform-origin: 50% 100%;
+  transform: translate3d(0, calc(var(--p) * 30%), 0) scale(calc(1 + var(--p) * 0.6)); /* we fly past them */
+}
+
+.hero-viewer { opacity: var(--t); }
+.hero-late { opacity: calc(1 - var(--t)); }
+.hero-synced { opacity: var(--t); }
+.hero-line {
+  fill: none;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--t));
+  opacity: 0.75;
+}
+
+/* The screen: drawn at full size and scaled down, so it is crisp when it arrives. */
+.hero-screen {
+  --s0: 0.18;
+  --t: clamp(0, var(--p) / 0.8, 1);
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(94vw, 1040px);
+  height: min(90svh, 740px);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  background: radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--color-violet) 40%, var(--color-surface)), var(--color-surface) 65%);
+  box-shadow:
+    0 0 60px 4px color-mix(in srgb, var(--color-violet) 45%, transparent),
+    0 0 220px 40px color-mix(in srgb, var(--color-deep) 55%, transparent);
+  transform: scale(calc(var(--s0) + (1 - var(--s0)) * var(--t) * var(--t))); /* accelerates as we get close */
+  will-change: transform;
+}
+.hero-screen-light {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 70% 60% at 50% 35%, color-mix(in srgb, var(--color-violet) 35%, transparent), transparent 70%);
+  opacity: calc(0.35 + var(--t) * 0.65); /* the screen brightens as people connect */
+}
+/* The light the screen throws on the city grows as we approach. */
+.hero-spill {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, color-mix(in srgb, var(--color-violet) 28%, transparent), transparent 70%);
+  opacity: calc(var(--p) * 0.9);
+}
+
+.hero-content { position: absolute; inset: 0; }
+.hero-intro, .hero-mid {
+  position: absolute;
+  inset-inline: 0;
+  top: clamp(72px, 13svh, 140px);
+  padding-inline: 16px;
+  text-align: center;
+}
+.hero-intro { opacity: calc(1 - var(--t)); transform: translate3d(0, calc(var(--t) * -48px), 0); }
+.hero-mid {
+  --in: clamp(0, (var(--p) - 0.26) / 0.1, 1);
+  --out: clamp(0, (var(--p) - 0.6) / 0.1, 1);
+  opacity: min(var(--in), calc(1 - var(--out)));
+  transform: translate3d(0, calc((1 - var(--in)) * 16px - var(--out) * 24px), 0);
+}
+.hero-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto; /* short windows: the card scrolls inside the screen instead of being cut off */
+  padding: 16px 12px;
+  opacity: var(--t);
+  transform: translate3d(0, calc((1 - var(--t)) * 24px), 0);
+}
+/* Faded-out text must not catch clicks meant for what's visible. */
+.hero:not([data-phase="intro"]) .hero-intro,
+.hero:not([data-phase="card"]) .hero-card,
+.hero-mid { pointer-events: none; }
+.hero:not([data-phase]) .hero-intro { pointer-events: auto; } /* before hydration */
+
+/* Phones: fewer layers (no stars, no rooftops) and a shorter scroll. */
+@media (max-width: 639px) {
+  .hero { height: 210svh; }
+  .hero-screen { --s0: 0.3; width: calc(100vw - 16px); height: calc(100svh - 16px); }
+  .hero-intro, .hero-mid { top: 10svh; }
+}
+
+/* Reduced motion: the finished picture, no scroll track. */
+@media (prefers-reduced-motion: reduce) {
+  .hero { --p: 1 !important; height: auto; }
+  .hero-stage { position: relative; height: auto; min-height: 100svh; }
+  .hero-content {
+    position: relative;
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 56px 12px;
+  }
+  .hero-intro, .hero-card { position: relative; inset: auto; top: auto; opacity: 1; transform: none; pointer-events: auto; }
+  .hero-card { display: flex; width: 100%; justify-content: center; overflow: visible; padding: 0; }
+  .hero-mid { display: none; }
 }

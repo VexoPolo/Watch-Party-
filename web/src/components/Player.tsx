@@ -8,6 +8,7 @@ import type { EngineStatus, SyncEngine } from "@/sync/SyncEngine";
 import type { RoomActions, RoomState } from "@/hooks/useRoom";
 import { fmtTime } from "@/lib/identity";
 import { Button, IconButton, Popover, cx } from "@/components/ui";
+import { PosterWall } from "./PosterWall";
 
 export const EMOJIS = ["🔥", "😂", "😮", "😢", "❤️", "👏"];
 const HEAT_BUCKETS = 120;
@@ -160,8 +161,9 @@ export function Player({ engine, state, actions, canControl }: { engine: SyncEng
       )}
       {media?.kind === "youtube" && <div key={media.src} ref={ytHost} className="pointer-events-none aspect-video max-h-full w-full [&>iframe]:h-full [&>iframe]:w-full" />}
 
+      {!media && <PosterWall />}
       {!media && (
-        <div className="grid place-items-center gap-3 p-6 text-center">
+        <div className="relative grid place-items-center gap-3 p-6 text-center">
           <Clapperboard size={40} strokeWidth={1.25} aria-hidden className="text-accent" />
           <p className="font-display text-xl font-semibold text-fg">Nothing playing yet</p>
           <p className="max-w-xs text-sm text-fg-muted">Open the Queue tab to pick a film or paste a YouTube link.</p>
